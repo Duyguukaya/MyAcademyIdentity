@@ -1,5 +1,6 @@
 using EmailApp.Context;
 using EmailApp.Entities;
+using EmailApp.Validations;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,10 +17,16 @@ builder.Services.AddIdentity<AppUser, AppRole>(config =>
 {
     config.User.RequireUniqueEmail = true;
 
-}).AddEntityFrameworkStores<AppDbContext>();
+}).AddEntityFrameworkStores<AppDbContext>()
+.AddErrorDescriber<CustomErrorDescriber>();
 
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    opt.LoginPath = "/Login/Index";
+});
 
 var app = builder.Build();
 
@@ -33,6 +40,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
