@@ -18,8 +18,8 @@ namespace EmailApp.Controllers
         {
             var user = new AppUser
             {
-                FirstName = model.Email,
-                LastName = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
                 Email = model.Email,
                 UserName = model.UserName,
             };

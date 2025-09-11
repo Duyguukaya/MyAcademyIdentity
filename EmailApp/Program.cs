@@ -25,6 +25,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.ConfigureApplicationCookie(opt =>
 {
+    opt.Cookie.Name = "IdentityCookie";
     opt.LoginPath = "/Login/Index";
 });
 
