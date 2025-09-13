@@ -25,13 +25,18 @@
             </div>
         </div>
         <!-- /.card-body -->
-        <div class="card-footer">
-            <div class="float-right">
-                <button type="button" class="btn btn-default"><i class="fas fa-pencil-alt"></i> Draft</button>
-                <button type="submit" class="btn btn-primary"><i class="far fa-envelope"></i> Gönder</button>
+            <div class="card-footer">
+                <div class="float-right">
+                    <button type="submit" name="actionType" value="draft" class="btn btn-info">
+                        <i class="fas fa-pencil-alt"></i> Taslağa Kaydet
+                    </button>
+                    <button type="submit" name="actionType" value="send" class="btn btn-primary">
+                        <i class="far fa-envelope"></i> Gönder
+                    </button>
+                </div>
+                <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Vazgeç</button>
             </div>
-            <button type="reset" class="btn btn-default"><i class="fas fa-times"></i> Discard</button>
-        </div>
+
         <!-- /.card-footer -->
     </div>
     </form>

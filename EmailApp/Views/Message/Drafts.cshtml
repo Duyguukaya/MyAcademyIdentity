@@ -1,0 +1,84 @@
+﻿@model List<Message>
+@{
+    ViewData["Title"] = "Drafts";
+    Layout = "~/Views/MainLayout/Index.cshtml";
+}
+
+<div class="col-md-9">
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <h3 class="card-title">Taslaklar</h3>
+
+            <div class="card-tools">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" placeholder="Search Mail">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="mailbox-controls">
+                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                    <i class="far fa-square"></i>
+                </button>
+            </div>
+
+            <div class="table-responsive mailbox-messages">
+                <table class="table table-hover table-striped">
+                    <tbody>
+                        @foreach (var draft in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="icheck-primary">
+                                        <input type="checkbox" value="" id="check_@draft.MessageId">
+                                        <label for="check_@draft.MessageId"></label>
+                                    </div>
+                                </td>
+                                <td class="mailbox-star">
+                                    <a href="#"><i class="fas fa-star text-warning"></i></a>
+                                </td>
+                                <td class="mailbox-name">
+                                    <a href="@Url.Action("MessageDetail", "Message", new { id = draft.MessageId })">
+                                        @draft.Subject
+                                    </a>
+                                </td>
+                                <td class="mailbox-subject">
+                                    @if (draft.ReceiverId != 0)
+                                    {
+                                        <form method="post" asp-action="SendDraft" asp-controller="Message">
+                                            <input type="hidden" name="id" value="@draft.MessageId" />
+                                            <input type="hidden" name="receiverEmail" value="@draft.Receiver?.Email" />
+                                            <button type="submit" class="btn btn-success btn-sm">
+                                                <i class="far fa-paper-plane"></i> Gönder
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Alıcı yok, taslağı düzenleyin</span>
+                                    }
+                                </td>
+                                <td class="mailbox-date">@draft.SendDate.ToShortDateString()</td>
+                              
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-footer p-0">
+            <div class="mailbox-controls">
+                <button type="button" class="btn btn-default btn-sm checkbox-toggle">
+                    <i class="far fa-square"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
