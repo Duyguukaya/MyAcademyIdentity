@@ -130,5 +130,31 @@ namespace EmailApp.Controllers
             return View(messages);
         }
 
+        public async Task<IActionResult> Important()
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var important = await _context.Messages
+        .Include(x => x.Sender)
+        .Include(x => x.Receiver)
+        .Where(m => (m.SenderId == user.Id || m.ReceiverId == user.Id) && m.is_important)
+        .ToListAsync();
+
+            return View(important);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ToggleImportant(int id)
+        {
+            var message = await _context.Messages.FindAsync(id);
+            if (message == null) return NotFound();
+
+            message.is_important = !message.is_important; // tersine çevir
+            _context.Update(message);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, important = message.is_important });
+        }
+
+
     }
 }

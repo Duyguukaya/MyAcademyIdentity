@@ -4,6 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
+<style>
+    .is-read {
+        background-color: #f0f0f0; /* soluk gri */
+    }
+</style>
+
 <div class="col-md-9">
     <div class="card card-primary card-outline">
         <div class="card-header">
@@ -13,9 +19,10 @@
         <!-- /.card-header -->
         <div class="card-body p-0">
             <div class="table-responsive mailbox-messages">
-                <table class="table table-hover table-striped">
+                @foreach(var item in Model){
+                <table class="table table-hover @(item.is_read ? "is-read" : "") ">
                     <tbody>
-                        @foreach(var item in Model){
+                        
                         <tr>
                             <td>
                                 <div class="icheck-primary">
@@ -23,17 +30,21 @@
                                     <label for="check1"></label>
                                 </div>
                             </td>
-                            <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
-                            <td class="mailbox-name"><a href="/Message/MessageDetail/@item.MessageId">@item.Sender.FirstName @item.Sender.LastName</a></td>
+                                <td class="mailbox-star">
+                                    <a href="javascript:void(0)" class="toggle-star" data-id="@item.MessageId">
+                                        <i class="fas fa-star @(item.is_important ? "text-warning" : "text-secondary")"></i>
+                                    </a>
+                                </td>
+                            <td class="mailbox-name"><a href="/Message/MessageDetail/@item.MessageId" onclick="">@item.Sender.FirstName @item.Sender.LastName</a></td>
                             <td class="mailbox-subject">
                                 <b>@item.Subject</b>
                             </td>
                             <td class="mailbox-attachment"></td>
                             <td class="mailbox-date">@item.SendDate.ToShortDateString()</td>
                         </tr>
-                        }
                     </tbody>
                 </table>
+                }
                 <!-- /.table -->
             </div>
             <!-- /.mail-box-messages -->
@@ -43,3 +54,28 @@
     </div>
     <!-- /.card -->
 </div>
+
+<script>
+    document.querySelectorAll(".toggle-star").forEach(star => {
+        star.addEventListener("click", function () {
+            const messageId = this.dataset.id;
+            const icon = this.querySelector("i");
+
+            fetch(`/Message/ToggleImportant/${messageId}`, {
+                method: "POST"
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.important) {
+                        icon.classList.remove("text-secondary");
+                        icon.classList.add("text-warning"); // ⭐️ sarı yap
+                    } else {
+                        icon.classList.remove("text-warning");
+                        icon.classList.add("text-secondary"); // gri yap
+                    }
+                }
+            });
+        });
+    });
+</script>
