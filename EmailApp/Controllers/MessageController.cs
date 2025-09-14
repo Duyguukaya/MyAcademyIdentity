@@ -26,12 +26,15 @@ namespace EmailApp.Controllers
                 return NotFound();
 
 
-            if (!message.is_read)
+            var user = _userManager.FindByNameAsync(User.Identity.Name).Result;
+
+            if (message.ReceiverId == user.Id && !message.is_read)
             {
                 message.is_read = true;
                 _context.Update(message);
                 _context.SaveChanges();
             }
+
 
             return View(message);
         }
