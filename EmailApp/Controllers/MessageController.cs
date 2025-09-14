@@ -21,6 +21,18 @@ namespace EmailApp.Controllers
         public IActionResult MessageDetail(int id)
         {
             var message = _context.Messages.Include(x => x.Sender).Include(x => x.Receiver).FirstOrDefault(x => x.MessageId == id);
+
+            if (message == null)
+                return NotFound();
+
+
+            if (!message.is_read)
+            {
+                message.is_read = true;
+                _context.Update(message);
+                _context.SaveChanges();
+            }
+
             return View(message);
         }
 
