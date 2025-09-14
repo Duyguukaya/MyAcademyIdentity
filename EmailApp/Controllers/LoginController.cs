@@ -36,7 +36,7 @@ namespace EmailApp.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Logout");
+            return RedirectToAction("Index", "Login");
         }
     }
 }

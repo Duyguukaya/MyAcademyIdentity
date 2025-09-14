@@ -3,51 +3,105 @@
      _MainLayoutComponent 
 *@
 
+<style>
+    /* Oluştur butonu */
+    .btn-pastel-pink {
+        background-color: #A2365B;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+        .btn-pastel-pink:hover {
+            background-color: #86274c;
+            transform: translateY(-2px);
+        }
+
+    /* Sidebar kart */
+    .sidebar-card {
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+        /* Kart başlığı */
+        .sidebar-card .card-header {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            font-size: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        /* Nav linkler */
+        .sidebar-card .nav-link {
+            color: #495057;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 5px;
+            transition: all 0.2s;
+        }
+
+            .sidebar-card .nav-link:hover {
+                background-color: #f1f3f5;
+                color: #212529;
+                text-decoration: none;
+            }
+
+        .sidebar-card .nav-item.active .nav-link {
+            background-color: #e9ecef;
+            font-weight: 600;
+        }
+
+        /* Badge */
+        .sidebar-card .badge {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+</style>
+
+
+
 <div class="col-md-3">
-    <a href="compose.html" class="btn btn-primary btn-block mb-3">Compose</a>
+    <!-- Oluştur butonu -->
+    <a class="btn btn-pastel-pink btn-block mb-3" href="/Message/SendMessage">
+        <i class="fas fa-pencil-alt me-2"></i> Oluştur
+    </a>
 
-    <div class="card">
+    <!-- Sidebar kart -->
+    <div class="card sidebar-card">
         <div class="card-header">
-            <h3 class="card-title">Folders</h3>
-
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                </button>
-            </div>
+            Mail
         </div>
         <div class="card-body p-0">
             <ul class="nav nav-pills flex-column">
-                <li class="nav-item active">
-                    <a href="/Message/Index" class="nav-link">
-                        <i class="fas fa-inbox"></i> Gelen Kutusu
-                        <span class="badge bg-primary float-right">@ViewBag.not_read_message</span>
+                <li class="nav-item">
+                    <a href="/Message/Index" class="nav-link d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-inbox me-2"></i>Gelen Kutusu</span>
+                        <span class="badge bg-primary">@ViewBag.not_read_message</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/Message/SentMessages" class="nav-link">
-                        <i class="far fa-envelope"></i> Gönderilenler
+                        <i class="far fa-envelope me-2"></i> Gönderilenler
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/Message/Drafts" class="nav-link">
-                        <i class="far fa-file-alt"></i> Taslaklar
+                        <i class="far fa-file-alt me-2"></i> Taslaklar
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="/Message/Important" class="nav-link">
-                        <i class="far fa-star"></i> Yıldızlı
+                        <i class="far fa-star me-2"></i> Yıldızlı
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="far fa-trash-alt"></i> Çöp Kutusu
+                        <i class="far fa-trash-alt me-2"></i> Çöp Kutusu
                     </a>
                 </li>
             </ul>
         </div>
-        <!-- /.card-body -->
     </div>
-    <!-- /.card -->
-    <!-- /.card -->
 </div>
