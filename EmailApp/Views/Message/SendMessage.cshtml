@@ -12,17 +12,16 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body">
-            <div class="form-group">
-                <input class="form-control" asp-for="ReciverEmail" placeholder="Kime:" required>
-            </div>
-            <div class="form-group">
-                <input class="form-control" asp-for="Subject" placeholder="Konu:" required>
-            </div>
-            <div class="form-group">
-                <textarea asp-for="Body" class="form-control" style="height: 300px" required>
+                <div class="form-group">
+                    <input class="form-control" asp-for="ReciverEmail" placeholder="Kime:" required />
+                </div>
+                <div class="form-group">
+                    <input class="form-control" asp-for="Subject" placeholder="Konu:" required />
+                </div>
+                <div class="form-group">
+                    <textarea asp-for="Body" class="form-control" style="height: 300px" required></textarea>
+                </div>
 
-                </textarea>
-            </div>
         </div>
         <!-- /.card-body -->
             <div class="card-footer">
@@ -34,7 +33,7 @@
                         <i class="far fa-envelope"></i> Gönder
                     </button>
                 </div>
-                <button type="reset" class="btn btn-danger"><i class="fas fa-times"></i> Vazgeç</button>
+                <a class="btn btn-danger" href="/Message/Index"><i class="fas fa-times"></i> Vazgeç</a>
             </div>
 
         <!-- /.card-footer -->

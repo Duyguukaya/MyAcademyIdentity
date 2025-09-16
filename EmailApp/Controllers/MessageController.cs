@@ -229,8 +229,38 @@ namespace EmailApp.Controllers
             return RedirectToAction("Trash");
         }
 
+        public async Task<IActionResult> Reply(int id)
+        {
+            var message = await _context.Messages
+                .Include(x => x.Sender)
+                .FirstOrDefaultAsync(x => x.MessageId == id);
 
+            if (message == null) return NotFound();
 
+            var model = new SendMessageViewModel
+            {
+                ReciverEmail = message.Sender.Email, 
+                Subject = "Re: " + message.Subject   
+            };
+
+            return View("SendMessage", model);
+        }
+
+        public async Task<IActionResult> Forward(int id)
+        {
+            var message = await _context.Messages
+                .FirstOrDefaultAsync(x => x.MessageId == id);
+
+            if (message == null) return NotFound();
+
+            var model = new SendMessageViewModel
+            {
+                Subject = "Fwd: " + message.Subject, 
+                Body = message.Body                  
+            };
+
+            return View("SendMessage", model);
+        }
 
 
     }

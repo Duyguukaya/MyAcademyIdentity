@@ -53,8 +53,12 @@
         <!-- /.card-footer -->
         <div class="card-footer">
             <div class="float-right">
-                <button type="button" class="btn btn-secondary"><i class="fas fa-reply"></i> Yanıtla</button>
-                <button type="button" class="btn btn-secondary"><i class="fas fa-share"></i> Yönlendir</button>
+                <a asp-action="Reply" asp-controller="Message" asp-route-id="@Model.MessageId" class="btn btn-secondary">
+                    <i class="fas fa-reply"></i> Yanıtla
+                </a>
+                <a asp-action="Forward" asp-controller="Message" asp-route-id="@Model.MessageId" class="btn btn-secondary">
+                    <i class="fas fa-share"></i> Yönlendir
+                </a>
             </div>
             <form method="post" asp-action="DeleteMessage" asp-controller="Message" style="display:inline;">
                 <input type="hidden" name="id" value="@Model.MessageId" />
