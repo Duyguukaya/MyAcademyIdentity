@@ -1,0 +1,17 @@
+﻿@model List<Message>
+
+@foreach (var message in Model)
+{
+    <a href="@Url.Action("MessageDetail", "Message", new { id = message.MessageId })" class="dropdown-item">
+        <div class="media">
+            <div class="media-body">
+                <h3 class="dropdown-item-title">
+                    @message.Sender.Email
+                </h3>
+                <p class="text-sm">@message.Subject</p>
+                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i>@message.SendDate.ToShortTimeString()</p>
+            </div>
+        </div>
+        <div class="dropdown-divider"></div>
+    </a>
+}
