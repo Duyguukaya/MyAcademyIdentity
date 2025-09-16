@@ -87,7 +87,7 @@ namespace EmailApp.Controllers
 
             var drafts = await _context.Messages
                 .Include(m => m.Receiver) // Burayı ekledik
-                .Where(m => m.SenderId == user.Id && m.IsDraft)
+                .Where(m => m.SenderId == user.Id && m.IsDraft && !m.is_deleted)
                 .ToListAsync();
 
             return View(drafts);
@@ -129,7 +129,7 @@ namespace EmailApp.Controllers
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
             var messages = _context.Messages
                 .Include(x => x.Receiver)   // alıcı bilgilerini de ekle
-                .Where(x => x.SenderId == user.Id)
+                .Where(x => x.SenderId == user.Id && !x.is_deleted)
                 .ToList();
             return View(messages);
         }
