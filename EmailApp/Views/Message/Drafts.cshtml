@@ -26,7 +26,9 @@
                                     </div>
                                 </td>
                                 <td class="mailbox-star">
-                                    <a href="#"><i class="fas fa-star text-warning"></i></a>
+                                    <a href="javascript:void(0)" class="toggle-star" data-id="@draft.MessageId">
+                                        <i class="fas fa-star @(draft.is_important ? "text-warning" : "text-secondary")"></i>
+                                    </a>
                                 </td>
                                 <td class="mailbox-name">
                                     <a href="@Url.Action("MessageDetail", "Message", new { id = draft.MessageId })">
@@ -59,3 +61,28 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.querySelectorAll(".toggle-star").forEach(star => {
+        star.addEventListener("click", function () {
+            const messageId = this.dataset.id;
+            const icon = this.querySelector("i");
+
+            fetch(`/Message/ToggleImportant/${messageId}`, {
+                method: "POST"
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.important) {
+                        icon.classList.remove("text-secondary");
+                        icon.classList.add("text-warning"); // ⭐️ sarı yap
+                    } else {
+                        icon.classList.remove("text-warning");
+                        icon.classList.add("text-secondary"); // gri yap
+                    }
+                }
+            });
+        });
+    });
+</script>

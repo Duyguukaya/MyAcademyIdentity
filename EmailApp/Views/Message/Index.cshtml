@@ -1,12 +1,20 @@
 ﻿@model List<Message>
 @{
     Layout = "~/Views/MainLayout/Index.cshtml";
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Gelen Kutusu";
 }
 
 <style>
     .is-read {
         background-color: #f0f0f0; /* soluk gri */
+    }
+
+    .mailbox-messages td {
+        vertical-align: middle;
+    }
+
+    .mailbox-star a {
+        cursor: pointer;
     }
 </style>
 
@@ -14,45 +22,52 @@
     <div class="card card-primary card-outline">
         <div class="card-header">
             <h3 class="card-title">Gelen Kutusu</h3>
-            <!-- /.card-tools -->
         </div>
-        <!-- /.card-header -->
+
         <div class="card-body p-0">
             <div class="table-responsive mailbox-messages">
-                @foreach(var item in Model){
-                <table class="table table-hover @(item.is_read ? "is-read" : "") ">
-                    <tbody>
-                        
+                <table class="table table-hover">
+                    <thead>
                         <tr>
-                            <td>
-                                <div class="icheck-primary">
-                                    <input type="checkbox" value="" id="check1">
-                                    <label for="check1"></label>
-                                </div>
-                            </td>
+                            <th></th> <!-- Checkbox -->
+                            <th></th> <!-- Star -->
+                            <th>Gönderen</th>
+                            <th>Konu</th>
+                            <th></th> <!-- Attachment -->
+                            <th>Tarih</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var checkboxId = "check" + item.MessageId;
+                            <tr class="@(item.is_read ? "is-read" : "")">
+                                <td>
+                                    <div class="icheck-primary">
+                                        <input type="checkbox" value="" id="@checkboxId">
+                                        <label for="@checkboxId"></label>
+                                    </div>
+                                </td>
                                 <td class="mailbox-star">
                                     <a href="javascript:void(0)" class="toggle-star" data-id="@item.MessageId">
                                         <i class="fas fa-star @(item.is_important ? "text-warning" : "text-secondary")"></i>
                                     </a>
                                 </td>
-                            <td class="mailbox-name"><a href="/Message/MessageDetail/@item.MessageId" onclick="">@item.Sender.FirstName @item.Sender.LastName</a></td>
-                            <td class="mailbox-subject">
-                                <b>@item.Subject</b>
-                            </td>
-                            <td class="mailbox-attachment"></td>
-                            <td class="mailbox-date">@item.SendDate.ToShortDateString()</td>
-                        </tr>
+                                <td class="mailbox-name">
+                                    <a href="/Message/MessageDetail/@item.MessageId">@item.Sender.FirstName @item.Sender.LastName</a>
+                                </td>
+                                <td class="mailbox-subject">
+                                    <b>@item.Subject</b>
+                                </td>
+                                <td class="mailbox-attachment"></td>
+                                <td class="mailbox-date">@item.SendDate.ToShortDateString()</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
-                }
-                <!-- /.table -->
             </div>
-            <!-- /.mail-box-messages -->
         </div>
-        <!-- /.card-body -->
-    
     </div>
-    <!-- /.card -->
 </div>
 
 <script>
@@ -69,10 +84,10 @@
                 if (data.success) {
                     if (data.important) {
                         icon.classList.remove("text-secondary");
-                        icon.classList.add("text-warning"); // ⭐️ sarı yap
+                        icon.classList.add("text-warning");
                     } else {
                         icon.classList.remove("text-warning");
-                        icon.classList.add("text-secondary"); // gri yap
+                        icon.classList.add("text-secondary");
                     }
                 }
             });
