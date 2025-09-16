@@ -14,7 +14,7 @@ namespace EmailApp.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var messages = _context.Messages.Include(x=>x.Sender).Where(x => x.ReceiverId == user.Id).ToList();
+            var messages = _context.Messages.Include(x=>x.Sender).Where(x => x.ReceiverId == user.Id && !x.is_deleted).ToList();
             return View(messages);
         }
 
@@ -65,15 +65,19 @@ namespace EmailApp.Controllers
                 SenderId = sender.Id,
                 ReceiverId = receiver.Id, // Taslakta da alıcı bilgisi saklanacak
                 SendDate = DateTime.Now,
-                IsDraft = (actionType == "draft")
+                IsDraft = (actionType == "draft"),
+                is_deleted = (actionType == "trash")
             };
 
             _context.Messages.Add(message);
             await _context.SaveChangesAsync();
 
-            return actionType == "draft"
-                ? RedirectToAction("Drafts")
-                : RedirectToAction("SentMessages");
+            return actionType switch
+            {
+                "draft" => RedirectToAction("Drafts"),
+                "trash" => RedirectToAction("Trash"),
+                _ => RedirectToAction("SentMessages"),
+            };
         }
 
         // Taslak mesajlar
@@ -154,6 +158,79 @@ namespace EmailApp.Controllers
 
             return Json(new { success = true, important = message.is_important });
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteMessage(int id)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            var message = await _context.Messages
+                .FirstOrDefaultAsync(x => x.MessageId == id && (x.SenderId == user.Id || x.ReceiverId == user.Id));
+
+            if (message == null)
+                return NotFound();
+
+            // Çöp kutusuna at
+            message.is_deleted = true;
+            _context.Update(message);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Trash");
+        }
+
+        public async Task<IActionResult> Trash()
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            var trash = await _context.Messages
+                .Include(m => m.Sender)
+                .Include(m => m.Receiver)
+                .Where(m => (m.SenderId == user.Id || m.ReceiverId == user.Id) && m.is_deleted)
+                .ToListAsync();
+
+            return View(trash);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RestoreMessage(int id)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            var message = await _context.Messages
+                .FirstOrDefaultAsync(x => x.MessageId == id && (x.SenderId == user.Id || x.ReceiverId == user.Id));
+
+            if (message == null)
+                return NotFound();
+
+            // Çöp kutusundan geri al
+            message.is_deleted = false;
+            _context.Update(message);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Message");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> HardDelete(int id)
+        {
+            var user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+            var message = await _context.Messages
+                .FirstOrDefaultAsync(x => x.MessageId == id && (x.SenderId == user.Id || x.ReceiverId == user.Id));
+
+            if (message == null)
+                return NotFound();
+
+            // DB’den tamamen sil
+            _context.Messages.Remove(message);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Trash");
+        }
+
+
+
 
 
     }

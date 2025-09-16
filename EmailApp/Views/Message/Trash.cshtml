@@ -1,0 +1,54 @@
+﻿@model List<Message>
+@{
+    ViewData["Title"] = "Çöp Kutusu";
+    Layout = "~/Views/MainLayout/Index.cshtml";
+}
+
+<div class="col-md-9">
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <h3 class="card-title">Çöp Kutusu</h3>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive mailbox-messages">
+                <table class="table table-hover">
+                    <tbody>
+                        @foreach (var trash in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="icheck-primary">
+                                        <input type="checkbox" value="" id="check_@trash.MessageId">
+                                        <label for="check_@trash.MessageId"></label>
+                                    </div>
+                                </td>
+                                <td class="mailbox-name">
+                                        @trash.Subject
+                                </td>
+                                <td class="mailbox-date">@trash.SendDate.ToShortDateString()</td>
+                                <td>
+                                    <!-- Geri Al -->
+                                    <form method="post" asp-action="RestoreMessage" asp-controller="Message" style="display:inline;">
+                                        <input type="hidden" name="id" value="@trash.MessageId" />
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            <i class="fas fa-undo"></i> Geri Al
+                                        </button>
+                                    </form>
+
+                                    <!-- Kalıcı Sil -->
+                                    <form method="post" asp-action="HardDelete" asp-controller="Message" style="display:inline;">
+                                        <input type="hidden" name="id" value="@trash.MessageId" />
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i> Kalıcı Sil
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -56,7 +56,12 @@
                 <button type="button" class="btn btn-secondary"><i class="fas fa-reply"></i> Yanıtla</button>
                 <button type="button" class="btn btn-secondary"><i class="fas fa-share"></i> Yönlendir</button>
             </div>
-            <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i> Sil</button>
+            <form method="post" asp-action="DeleteMessage" asp-controller="Message" style="display:inline;">
+                <input type="hidden" name="id" value="@Model.MessageId" />
+                <button type="submit" class="btn btn-danger">
+                    <i class="far fa-trash-alt"></i> Sil
+                </button>
+            </form>
         </div>
         <!-- /.card-footer -->
     </div>
