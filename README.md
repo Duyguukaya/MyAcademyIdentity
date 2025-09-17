@@ -83,7 +83,6 @@ Kullanıcılar önemli buldukları mesajları yıldızlayabilir. Yıldızlı mes
 
 ### Diğer Görseller
 <img width="1919" height="1007" alt="Ekran görüntüsü 2025-09-16 221147" src="https://github.com/user-attachments/assets/594335c0-c9ef-4849-b3c1-5f36c8fac5e1" />
-<img width="1919" height="828" alt="Ekran görüntüsü 2025-09-16 221211" src="https://github.com/user-attachments/assets/c25c2b0c-a5ce-4811-be13-6a6cfaae1af5" />
 <img width="1919" height="828" alt="Ekran görüntüsü 2025-09-16 221211" src="https://github.com/user-attachments/assets/26357ee2-24c5-4318-a52d-e4bccfe2d3d3" />
 <img width="1893" height="818" alt="Ekran görüntüsü 2025-09-16 221427" src="https://github.com/user-attachments/assets/5eb7919b-8740-4157-8fd6-876b1f35bc6c" />
 <img width="1919" height="801" alt="Ekran görüntüsü 2025-09-16 221534" src="https://github.com/user-attachments/assets/e963e545-60c7-4382-88a3-adbd811549cc" />
